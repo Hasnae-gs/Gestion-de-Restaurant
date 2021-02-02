@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Http\Middleware;
+
+use App\Providers\RouteServiceProvider;
+use Closure;
+use Illuminate\Support\Facades\Auth;
+
+class RedirectIfAuthenticated
+{
+    public function handle($request, Closure $next, $guard = null)
+    {
+        if ($guard == "restau" && Auth::guard($guard)->check()) {
+            return redirect('/restau');
+        }
+        if ($guard == "client" && Auth::guard($guard)->check()) {
+            return redirect('/client');
+        }
+        if (Auth::guard($guard)->check()) {
+            return redirect('/home');
+        }
+
+        return $next($request);
+    }
+}
